@@ -96,7 +96,7 @@ namespace ReGenIndexedGraph
     {
         private String label;
         private int index;
-        private VertexAttributes vertexAttributes;
+        private Dictionary<String, Object> vertexAttributes;
         private List<String> edgeIndices;
         public Vertex()
         {
@@ -108,32 +108,25 @@ namespace ReGenIndexedGraph
         public Vertex(String label)
         {
             this.label = label;
-            this.edgeIndices = new List<string>();
+            this.edgeIndices = new List<String>();
             this.vertexAttributes = null;
             this.index = 0;
         }
         public Vertex(String label, int index)
         {
             this.label = label;
-            this.edgeIndices = new List<string>();
+            this.edgeIndices = new List<String>();
             this.vertexAttributes = null;
             this.index = index;
         }
-        public Vertex(String label, List<String> edgeIndices)
+        public Vertex(String label, List<String> edgeIndices, int index)
         {
             this.label = label;
             this.edgeIndices = edgeIndices;
             this.vertexAttributes = null;
-            this.index = 0;
+            this.index = index;
         }
-        public Vertex(String label, List<String> edgeIndices, VertexAttributes vertexAttributes)
-        {
-            this.label = label;
-            this.edgeIndices = edgeIndices;
-            this.vertexAttributes = vertexAttributes;
-            this.index = 0;
-        }
-        public Vertex(String label, List<String> edgeIndices, VertexAttributes vertexAttributes, int index)
+        public Vertex(String label, List<String> edgeIndices, Dictionary<String, Object> vertexAttributes, int index)
         {
             this.label = label;
             this.edgeIndices =edgeIndices;
@@ -157,10 +150,18 @@ namespace ReGenIndexedGraph
         {
             this.edgeIndices = edgeIncides;
         }
-        public void SetAttributes(VertexAttributes attributes)
+        public void SetAttributes(Dictionary<String, Object> attributes)
         {
             this.vertexAttributes = attributes;
         }
+        public void SetAttribute(String key, Object attribute)
+        {
+            if (this.vertexAttributes == null) {
+                this.vertexAttributes = new Dictionary<String, Object>();
+            }
+            this.vertexAttributes.Add(key, attribute);
+        }
+
         public String GetLabel()
         {
             return this.label;
@@ -173,11 +174,20 @@ namespace ReGenIndexedGraph
         {
             return this.edgeIndices;
         }
-        public VertexAttributes GetAttributes()
+        public Dictionary<String, Object> GetAttributes()
         {
             return this.vertexAttributes;
         }
-        public void SetVertex(String label, VertexAttributes attributes, List<String>edgeIndices)
+        public T GetAttribute<T>(String key)
+        {
+            return (T)this.vertexAttributes[key];
+        }
+        public Object GetAttribute(String key)
+        {
+            return this.vertexAttributes[key];
+        }
+
+        public void SetVertex(String label, Dictionary<String, Object> attributes, List<String>edgeIndices)
         {
             this.label = label;
             this.vertexAttributes = attributes;
@@ -280,49 +290,6 @@ namespace ReGenIndexedGraph
             lesserCount = first;
             return lesserCount;
 
-        }
-        static int binarySearchCount(int[] arr,
-                             int n, int key)
-        {
-            int left = 0;
-            int right = n;
-
-            int mid = 0;
-            while (left < right)
-            {
-                mid = (right + left) / 2;
-
-                // Check if key is 
-                // present in array 
-                if (arr[mid] == key)
-                {
-                    // If duplicates are present 
-                    // it returns the position 
-                    // of last element 
-                    while (mid + 1 < n && arr[mid + 1] == key)
-                        mid++;
-                    break;
-                }
-
-                // If key is smaller, 
-                // ignore right half 
-                else if (arr[mid] > key)
-                    right = mid;
-
-                // If key is greater, 
-                // ignore left half 
-                else
-                    left = mid + 1;
-            }
-
-            // If key is not found in array 
-            // then it will be before mid 
-            while (mid > -1 && arr[mid] > key)
-                mid--;
-
-            // Return mid + 1 because of 
-            // 0-based indexing of array 
-            return mid + 1;
         }
         public Graph()
         {
@@ -941,82 +908,102 @@ namespace ReGenIndexedGraph
     {
         static void Main(string[] args)
         {
-            Vertex v = new Vertex();
-            Vertex v1 = new Vertex();
-            v.SetLabel("1");
-            v.SetIndex(100);
-            v1.SetIndex(2);
-            Console.WriteLine("vertex label: {0}, HASHCODE: {1}, {2}", v.GetLabel(), v.GetHashCode(), v1.GetHashCode());
-            Edge edge1 = new Edge("ABC",null);
-            Edge edge2 = new Edge();
-            edge2.SetRelationLabel("ABC");
-           
-            Console.WriteLine(edge1.Equals(edge2) + "-"+ edge1.GetHashCode()+"-"+edge2.GetHashCode());
-            Graph graph = new Graph();
-            graph.AddVertex("v1");
-            graph.AddVertex("v2");
-            graph.AddVertex("v3");
-            graph.SetRelation(graph.GetVertex(1).GetIndex(), graph.GetVertex(2).GetIndex(), "loves");
-            graph.SetRelation(graph.GetVertex(2).GetIndex(), graph.GetVertex(3).GetIndex(), "loves");
-            Console.WriteLine(graph.GetVertex(3).GetEdgeIndices().Count+" lets see"+ graph.GetVertex(1).GetEdgeIndices()[0]);
-            Graph graph2 = new Graph();
-            graph2.AddVertex("B1");
-            graph2.AddVertex("B2");
-            graph2.AddVertex("B3");
-            graph2.AddVertex("B4");
-            graph2.AddVertex("B5");
-            graph2.AddVertex("B6");
-            graph2.AddVertex("B7");
-            graph2.SetRelation(graph2.GetVertex(1).GetIndex(), graph2.GetVertex(2).GetIndex(), "loves", "some");
-            graph2.SetRelation(graph2.GetVertex(2).GetIndex(), graph2.GetVertex(1).GetIndex(), "loves", "some");
-            graph2.SetRelation(graph2.GetVertex(3).GetIndex(), graph2.GetVertex(1).GetIndex(), "loves", "some");
-            graph2.SetRelation(graph2.GetVertex(4).GetIndex(), graph2.GetVertex(1).GetIndex(), "loves", "some");
-            graph2.SetRelation(graph2.GetVertex(1).GetIndex(), graph2.GetVertex(4).GetIndex(), "loves", "some");
-            graph2.SetRelation(graph2.GetVertex(3).GetIndex(), graph2.GetVertex(2).GetIndex(), "loves", "some");
-            graph2.SetRelation(graph2.GetVertex(2).GetIndex(), graph2.GetVertex(3).GetIndex(), "loves", "some");
-            graph2.SetRelation(graph2.GetVertex(4).GetIndex(), graph2.GetVertex(2).GetIndex(), "loves", "some");
+            /*            Vertex v = new Vertex();
+                        Vertex v1 = new Vertex();
+                        v.SetLabel("1");
+                        v.SetIndex(100);
+                        v1.SetIndex(2);
+                        Console.WriteLine("vertex label: {0}, HASHCODE: {1}, {2}", v.GetLabel(), v.GetHashCode(), v1.GetHashCode());
+                        Edge edge1 = new Edge("ABC",null);
+                        Edge edge2 = new Edge();
+                        edge2.SetRelationLabel("ABC");
+
+                        Console.WriteLine(edge1.Equals(edge2) + "-"+ edge1.GetHashCode()+"-"+edge2.GetHashCode());
+                        Graph graph = new Graph();
+                        graph.AddVertex("v1");
+                        graph.AddVertex("v2");
+                        graph.AddVertex("v3");
+                        graph.SetRelation(graph.GetVertex(1).GetIndex(), graph.GetVertex(2).GetIndex(), "loves");
+                        graph.SetRelation(graph.GetVertex(2).GetIndex(), graph.GetVertex(3).GetIndex(), "loves");
+                        Console.WriteLine(graph.GetVertex(3).GetEdgeIndices().Count+" lets see"+ graph.GetVertex(1).GetEdgeIndices()[0]);
+                        Graph graph2 = new Graph();
+                        graph2.AddVertex("B1");
+                        graph2.AddVertex("B2");
+                        graph2.AddVertex("B3");
+                        graph2.AddVertex("B4");
+                        graph2.AddVertex("B5");
+                        graph2.AddVertex("B6");
+                        graph2.AddVertex("B7");
+                        graph2.SetRelation(graph2.GetVertex(1).GetIndex(), graph2.GetVertex(2).GetIndex(), "loves", "some");
+                        graph2.SetRelation(graph2.GetVertex(2).GetIndex(), graph2.GetVertex(1).GetIndex(), "loves", "some");
+                        graph2.SetRelation(graph2.GetVertex(3).GetIndex(), graph2.GetVertex(1).GetIndex(), "loves", "some");
+                        graph2.SetRelation(graph2.GetVertex(4).GetIndex(), graph2.GetVertex(1).GetIndex(), "loves", "some");
+                        graph2.SetRelation(graph2.GetVertex(1).GetIndex(), graph2.GetVertex(4).GetIndex(), "loves", "some");
+                        graph2.SetRelation(graph2.GetVertex(3).GetIndex(), graph2.GetVertex(2).GetIndex(), "loves", "some");
+                        graph2.SetRelation(graph2.GetVertex(2).GetIndex(), graph2.GetVertex(3).GetIndex(), "loves", "some");
+                        graph2.SetRelation(graph2.GetVertex(4).GetIndex(), graph2.GetVertex(2).GetIndex(), "loves", "some");
 
 
 
 
-            graph2.PrintVerticesAndIndices();
+                        graph2.PrintVerticesAndIndices();
 
 
-            graph2.DeleteVertex(2);
-            graph2.DeleteVertex(3);
+                        graph2.DeleteVertex(2);
+                        graph2.DeleteVertex(3);
 
-            graph2.PrintVerticesAndIndices();
-            graph2.UpdateGraph();
-            graph2.PrintVerticesAndIndices();
-            graph2.SetRelation(graph2.GetVertex(3), graph2.GetVertex(2), "loves", "some");
+                        graph2.PrintVerticesAndIndices();
+                        graph2.UpdateGraph();
+                        graph2.PrintVerticesAndIndices();
+                        graph2.SetRelation(graph2.GetVertex(3), graph2.GetVertex(2), "loves", "some");
 
-            graph2.SetRelation(graph2.GetVertex(2), graph2.GetVertex(4), "loves");
-            // graph2.SetRelation(graph2.GetVertex(4).GetIndex(), graph2.GetVertex(6).GetIndex(), "loves", "some");
-            Console.WriteLine("Main Graph: ");
-            graph2.PrintVerticesAndIndices();
-            //graph2.LoveRule();
-            //graph2.PrintLoveRule(); 
-            Rule loveRule = new LoveRule();
+                        graph2.SetRelation(graph2.GetVertex(2), graph2.GetVertex(4), "loves");
+                        // graph2.SetRelation(graph2.GetVertex(4).GetIndex(), graph2.GetVertex(6).GetIndex(), "loves", "some");
+                        Console.WriteLine("Main Graph: ");
+                        graph2.PrintVerticesAndIndices();
+                        //graph2.LoveRule();
+                        //graph2.PrintLoveRule(); 
+                        Rule loveRule = new LoveRule();
 
-            List<Graph> loveRuleGraph = loveRule.ImplementRule(graph2);
-            Console.WriteLine("Sub Graphs: ");
-            foreach (Graph graphx in loveRuleGraph)
+                        List<Graph> loveRuleGraph = loveRule.ImplementRule(graph2);
+                        Console.WriteLine("Sub Graphs: ");
+                        foreach (Graph graphx in loveRuleGraph)
+                        {
+                            graphx.PrintVertices();
+                        }
+                        Graph testGraph = new Graph();
+                        for(int i=0; i < 100000; i++)
+                        {
+                            testGraph.AddVertex("V_" + i);
+                        }
+                        for (int i = 0; i < 100000; i++)
+                        {
+                            int index1 = new Random().Next(1, 99999);
+                            int index2 = new Random().Next(1, 99999);
+                            testGraph.SetRelation(index1, index2, "loves");
+                        }
+
+                        testGraph.PrintVerticesAndIndices();*/
+            Vertex vertex = new Vertex("Hello");
+            Console.WriteLine("Vertex Label: "+vertex.GetLabel());
+            vertex.SetAttribute("power", 99999);
+            vertex.SetAttribute("Rank", "Very High");
+            /*Generic Type return*/
+            if (vertex.GetAttribute<int>("power") == 99999)
             {
-                graphx.PrintVertices();
-            }
-            Graph testGraph = new Graph();
-            for(int i=0; i < 10000; i++)
-            {
-                testGraph.AddVertex("V_" + i);
-            }
-            for (int i = 0; i < 10000; i++)
-            {
-                int index1 = new Random().Next(1, 9999);
-                int index2 = new Random().Next(1, 9999);
-                testGraph.SetRelation(index1, index2, "loves");
+                Console.WriteLine(99999);
+                if(vertex.GetAttribute<String>("Rank").Equals("Very High"))
+                    Console.WriteLine(vertex.GetAttribute<String>("Rank"));
             }
 
-            testGraph.PrintVerticesAndIndices();
+            /*Object Type return*/
+            if ((int)vertex.GetAttribute("power") == 99999)
+            {
+                Console.WriteLine(99999);
+                if (vertex.GetAttribute("Rank").Equals("Very High"))
+                    Console.WriteLine(vertex.GetAttribute("Rank"));
+            }
+
 
         }
     }
