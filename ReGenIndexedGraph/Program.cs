@@ -34,18 +34,18 @@ namespace ReGenIndexedGraph
             {
                 if (vertex != null)
                 {
-                    List<Vertex> destVertices = graph.GetDistantDestVerticesByRelationLabel(vertex, "loves");
+                    List<Vertex> destVertices = graph.GetDistantOutGoingVerticesByRelationLabel(vertex, "loves");
 
                     foreach (Vertex vertex1 in destVertices)
                     {
-                        if (!graph.GetDistantDestVerticesByRelationLabel(vertex1, "loves").Contains(vertex))
+                        if (!graph.GetDistantOutGoingVerticesByRelationLabel(vertex1, "loves").Contains(vertex))
                         {
-                            if (graph.GetDistantDestVerticesByRelationLabel(vertex1, "loves").Count > 0)
+                            if (graph.GetDistantOutGoingVerticesByRelationLabel(vertex1, "loves").Count > 0)
                             {
                                 Graph tempGraph = new Graph();
                                 tempGraph.AddVertex(vertex.GetLabel());
                                 tempGraph.AddVertex(vertex1.GetLabel());
-                                tempGraph.AddVertex(graph.GetDistantDestVerticesByRelationLabel(vertex1, "loves")[0].GetLabel());
+                                tempGraph.AddVertex(graph.GetDistantOutGoingVerticesByRelationLabel(vertex1, "loves")[0].GetLabel());
                                 tempGraph.SetRelation(tempGraph.GetVertex(1).GetIndex(), tempGraph.GetVertex(2).GetIndex(), "love");
                                 tempGraph.SetRelation(tempGraph.GetVertex(2).GetIndex(), tempGraph.GetVertex(3).GetIndex(), "love");
                                 returnGraph.Add(tempGraph);
@@ -651,7 +651,7 @@ namespace ReGenIndexedGraph
         {
             return this.vertices;
         }
-        public List<Vertex> GetSrcVertices(Vertex vertex)
+        public List<Vertex> GetIncomingVertices(Vertex vertex)
         {
             List<Vertex> srcVertices = new List<Vertex>();
             List<String> edgeKeys = vertex.GetEdgeIndices();
@@ -661,7 +661,7 @@ namespace ReGenIndexedGraph
             }
             return srcVertices;
         }
-        public List<Vertex> GetDestVertices(Vertex vertex)
+        public List<Vertex> GetOutGoingVertices(Vertex vertex)
         {
             List<Vertex> destVertices = new List<Vertex>();
             List<String> edgeKeys = vertex.GetEdgeIndices();
@@ -671,7 +671,7 @@ namespace ReGenIndexedGraph
             }
             return destVertices;
         }
-        public List<Vertex> GetDistinctSrcVertices(Vertex vertex)
+        public List<Vertex> GetDistantIncomingVertices(Vertex vertex)
         {
             List<Vertex> srcVertices = new List<Vertex>();
             List<String> edgeKeys = vertex.GetEdgeIndices();
@@ -682,7 +682,7 @@ namespace ReGenIndexedGraph
             }
             return srcVertices;
         }
-        public List<Vertex> GetDistantDestVertices(Vertex vertex)
+        public List<Vertex> GetDistantOutGoingVertices(Vertex vertex)
         {
             List<Vertex> destVertices = new List<Vertex>();
             List<String> edgeKeys = vertex.GetEdgeIndices();
@@ -706,7 +706,7 @@ namespace ReGenIndexedGraph
             }
             return allVertices;
         }
-        public List<Vertex> GetDistantSrcVerticesByRelationLabel(Vertex vertex, String relationLabel)
+        public List<Vertex> GetDistantIncomingVerticesByRelationLabel(Vertex vertex, String relationLabel)
         {
             List<Vertex> srcVertices = new List<Vertex>();
             List<String> edgeKeys = vertex.GetEdgeIndices();
@@ -730,7 +730,7 @@ namespace ReGenIndexedGraph
             }
             return srcVertices;
         }
-        public List<Vertex> GetDistantDestVerticesByRelationLabel(Vertex vertex, String relationLabel)
+        public List<Vertex> GetDistantOutGoingVerticesByRelationLabel(Vertex vertex, String relationLabel)
         {
             List<Vertex> destVertices = new List<Vertex>();
             List<String> edgeKeys = vertex.GetEdgeIndices();
@@ -788,7 +788,7 @@ namespace ReGenIndexedGraph
             }
             return vertices;
         }
-        public List<Vertex> GetDistantSrcVerticesByRelationReason(Vertex vertex, String relationLabel, String reasonLabel)
+        public List<Vertex> GetDistantIncomingVerticesByRelationReason(Vertex vertex, String relationLabel, String reasonLabel)
         {
             List<Vertex> srcVertices = new List<Vertex>();
             List<String> edgeKeys = vertex.GetEdgeIndices();
@@ -812,7 +812,7 @@ namespace ReGenIndexedGraph
             }
             return srcVertices;
         }
-        public List<Vertex> GetDistantDestVerticesByRelationReason(Vertex vertex, String relationLabel, String reasonLabel)
+        public List<Vertex> GetDistantOutGoingVerticesByRelationReason(Vertex vertex, String relationLabel, String reasonLabel)
         {
             List<Vertex> destVertices = new List<Vertex>();
             List<String> edgeKeys = vertex.GetEdgeIndices();
@@ -872,6 +872,100 @@ namespace ReGenIndexedGraph
 
             }
             return vertices;
+        }
+        public List<String> GetOutGoingEdgesIndexes(Vertex vertex)
+        {
+            List<String> edges = new List<String>(); 
+            foreach (String edge in vertex.GetEdgeIndices()) {
+                if (edge.Split("-")[0].Equals(vertex.GetIndex().ToString()))
+                {
+                    edges.Add(edge);
+                }
+            }
+            return edges;
+        }
+        public List<String> GetIncomingEdgesIndexes(Vertex vertex)
+        {
+            List<String> edges = new List<String>();
+            foreach (String edge in vertex.GetEdgeIndices())
+            {
+                if (edge.Split("-")[1].Equals(vertex.GetIndex().ToString()))
+                {
+                    edges.Add(edge);
+                }
+            }
+            return edges;
+        }
+        public List<String> GetAllEdgesIndexes(Vertex vertex)
+        {
+            return vertex.GetEdgeIndices();
+        }
+        public List<Edge> GetOutGoingEdges(Vertex vertex)
+        {
+            List<Edge> edges = new List<Edge>();
+            foreach (String edgeKey in vertex.GetEdgeIndices())
+            {
+                if (edgeKey.Split("-")[0].Equals(vertex.GetIndex().ToString()))
+                {
+                    edges.AddRange(this.edges[edgeKey]);
+                }
+            }
+            return edges;
+        }
+        public List<Edge> GetInComingEdges(Vertex vertex)
+        {
+            List<Edge> edges = new List<Edge>();
+            foreach (String edgeKey in vertex.GetEdgeIndices())
+            {
+                if (edgeKey.Split("-")[1].Equals(vertex.GetIndex().ToString()))
+                {
+                    edges.AddRange(this.edges[edgeKey]);
+                }
+            }
+            return edges;
+        }
+        public List<Edge> GetAllEdges(Vertex vertex)
+        {
+            List<Edge> edges = new List<Edge>();
+            foreach (String edgeKey in vertex.GetEdgeIndices())
+            {
+                edges.AddRange(this.edges[edgeKey]);               
+            }
+            return edges;
+        }
+        public Dictionary<String, List<Edge>> GetOutGoingEdgesWithIndexes(Vertex vertex)
+        {
+            Dictionary<String, List<Edge>> edges = new Dictionary<String, List<Edge>>();
+            foreach (String edgeKey in vertex.GetEdgeIndices())
+            {
+                if (edgeKey.Split("-")[0].Equals(vertex.GetIndex().ToString()))
+                {
+                    edges.Add(edgeKey, this.edges[edgeKey]);
+                }
+            }
+            return edges;
+        }
+        public Dictionary<String, List<Edge>> GetInComingEdgesWithIndexes(Vertex vertex)
+        {
+
+            Dictionary<String, List<Edge>> edges = new Dictionary<String, List<Edge>>();
+            foreach (String edgeKey in vertex.GetEdgeIndices())
+            {
+                if (edgeKey.Split("-")[1].Equals(vertex.GetIndex().ToString()))
+                {
+                    edges.Add(edgeKey, this.edges[edgeKey]);
+                }
+            }
+            return edges;
+        }
+        public Dictionary<String, List<Edge>> GetAllEdgesWithIndexes(Vertex vertex)
+        {
+            Dictionary<String, List<Edge>> edges = new Dictionary<String, List<Edge>>();
+            foreach (String edgeKey in vertex.GetEdgeIndices())
+            {
+                edges.Add(edgeKey, this.edges[edgeKey]);
+            }
+            return edges;
         }
         public void PrintVertices()
         {
@@ -970,39 +1064,52 @@ namespace ReGenIndexedGraph
                         foreach (Graph graphx in loveRuleGraph)
                         {
                             graphx.PrintVertices();
-                        }
+                        }*/
+
                         Graph testGraph = new Graph();
-                        for(int i=0; i < 100000; i++)
+                        for(int i=0; i < 100; i++)
                         {
                             testGraph.AddVertex("V_" + i);
                         }
-                        for (int i = 0; i < 100000; i++)
+                        for (int i = 0; i < 100; i++)
                         {
-                            int index1 = new Random().Next(1, 99999);
-                            int index2 = new Random().Next(1, 99999);
+                            int index1 = new Random().Next(1, 99);
+                            int index2 = new Random().Next(1, 99);
                             testGraph.SetRelation(index1, index2, "loves");
                         }
 
-                        testGraph.PrintVerticesAndIndices();*/
-            Vertex vertex = new Vertex("Hello");
-            Console.WriteLine("Vertex Label: "+vertex.GetLabel());
-            vertex.SetAttribute("power", 99999);
-            vertex.SetAttribute("Rank", "Very High");
-            /*Generic Type return*/
-            if (vertex.GetAttribute<int>("power") == 99999)
+                        testGraph.PrintVerticesAndIndices();
+            List<Edge> edges = testGraph.GetOutGoingEdges(testGraph.GetVertex(95));
+            List<String> edgeKey = testGraph.GetOutGoingEdgesIndexes(testGraph.GetVertex(95));
+            foreach (Edge e in edges)
             {
-                Console.WriteLine(99999);
-                if(vertex.GetAttribute<String>("Rank").Equals("Very High"))
-                    Console.WriteLine(vertex.GetAttribute<String>("Rank"));
+                Console.WriteLine("Relation: "+e.GetRelationLabel());
+            }
+            foreach (String e in edgeKey)
+            {
+                Console.WriteLine("Relation: " + e);
             }
 
-            /*Object Type return*/
-            if ((int)vertex.GetAttribute("power") == 99999)
-            {
-                Console.WriteLine(99999);
-                if (vertex.GetAttribute("Rank").Equals("Very High"))
-                    Console.WriteLine(vertex.GetAttribute("Rank"));
-            }
+
+            /* Vertex vertex = new Vertex("Hello");
+             Console.WriteLine("Vertex Label: "+vertex.GetLabel());
+             vertex.SetAttribute("power", 99999);
+             vertex.SetAttribute("Rank", "Very High");
+             *//*Generic Type return*//*
+             if (vertex.GetAttribute<int>("power") == 99999)
+             {
+                 Console.WriteLine(99999);
+                 if(vertex.GetAttribute<String>("Rank").Equals("Very High"))
+                     Console.WriteLine(vertex.GetAttribute<String>("Rank"));
+             }
+
+             *//*Object Type return*//*
+             if ((int)vertex.GetAttribute("power") == 99999)
+             {
+                 Console.WriteLine(99999);
+                 if (vertex.GetAttribute("Rank").Equals("Very High"))
+                     Console.WriteLine(vertex.GetAttribute("Rank"));
+             }*/
 
 
         }

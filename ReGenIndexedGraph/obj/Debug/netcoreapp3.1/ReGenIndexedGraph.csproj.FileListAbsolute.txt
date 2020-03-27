@@ -1,0 +1,13 @@
+C:\Users\Say Hello X)\source\repos\ReGenIndexedGraph\ReGenIndexedGraph\bin\Debug\netcoreapp3.1\ReGenIndexedGraph.exe
+C:\Users\Say Hello X)\source\repos\ReGenIndexedGraph\ReGenIndexedGraph\bin\Debug\netcoreapp3.1\ReGenIndexedGraph.deps.json
+C:\Users\Say Hello X)\source\repos\ReGenIndexedGraph\ReGenIndexedGraph\bin\Debug\netcoreapp3.1\ReGenIndexedGraph.runtimeconfig.json
+C:\Users\Say Hello X)\source\repos\ReGenIndexedGraph\ReGenIndexedGraph\bin\Debug\netcoreapp3.1\ReGenIndexedGraph.runtimeconfig.dev.json
+C:\Users\Say Hello X)\source\repos\ReGenIndexedGraph\ReGenIndexedGraph\bin\Debug\netcoreapp3.1\ReGenIndexedGraph.dll
+C:\Users\Say Hello X)\source\repos\ReGenIndexedGraph\ReGenIndexedGraph\bin\Debug\netcoreapp3.1\ReGenIndexedGraph.pdb
+C:\Users\Say Hello X)\source\repos\ReGenIndexedGraph\ReGenIndexedGraph\obj\Debug\netcoreapp3.1\ReGenIndexedGraph.csprojAssemblyReference.cache
+C:\Users\Say Hello X)\source\repos\ReGenIndexedGraph\ReGenIndexedGraph\obj\Debug\netcoreapp3.1\ReGenIndexedGraph.csproj.CoreCompileInputs.cache
+C:\Users\Say Hello X)\source\repos\ReGenIndexedGraph\ReGenIndexedGraph\obj\Debug\netcoreapp3.1\ReGenIndexedGraph.AssemblyInfoInputs.cache
+C:\Users\Say Hello X)\source\repos\ReGenIndexedGraph\ReGenIndexedGraph\obj\Debug\netcoreapp3.1\ReGenIndexedGraph.AssemblyInfo.cs
+C:\Users\Say Hello X)\source\repos\ReGenIndexedGraph\ReGenIndexedGraph\obj\Debug\netcoreapp3.1\ReGenIndexedGraph.dll
+C:\Users\Say Hello X)\source\repos\ReGenIndexedGraph\ReGenIndexedGraph\obj\Debug\netcoreapp3.1\ReGenIndexedGraph.pdb
+C:\Users\Say Hello X)\source\repos\ReGenIndexedGraph\ReGenIndexedGraph\obj\Debug\netcoreapp3.1\ReGenIndexedGraph.genruntimeconfig.cache
