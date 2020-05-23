@@ -52,6 +52,6 @@ Open the project folder which is  "ReGenIndexedGraph" with Visual Studio and Run
 ```
 ### Other Graph Implementation
 You can check my other Graph Implementation in the link given below.
-The only difference between this project and the other is how graph is stored. 
+The only difference between this project and the other is how graph stores the edges.
 
 [ReGenGraph](https://github.com/haiderali27/ReGenGraph)
